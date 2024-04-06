@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Course List</title>
+</head>
+<body>
+<!-- TODO based on student show their course list if none direct to creating a course -->
+<h2>Course List:</h2>
+<p>Current GPA: <span id="gpaOutput"></span></p>
+
+<form> 
+	<table> 
+		<tr th:each="currentCourse : ${courses}" > 
+		<td th:text="${currentCourse.id}" /> 
+		<td th:text="${currentCourse.courseId}" /> 
+		<td th:text="${currentCourse.courseName}" /> 
+		<td th:text="${currentCourse.creditHours}" /> 
+		<td th:text="${currentCourse.instructor}" /> 
+		<td th:text="${currentCourse.currentGrade}" /> 
+		<td>Edit</a></td> <!-- TODO Add functionality -->
+		<td>Delete</a></td> <!-- TODO Add functionality -->
+		</tr> 
+	</table> 
+</form> 
+<a href="../inputCourse">Add a new course</a> 
+
+</body>
+</html>
