@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Student List</title>
+</head>
+<body>
+<h2>Student List:</h2>
+<form> 
+	<table> 
+		<tr th:each="currentStudent : ${students}" > 
+		<td th:text="${currentStudent.id}" /> 
+		<td th:text="${currentStudent.name}" /> 
+		<td>Edit</a></td> <!-- TODO Add functionality -->
+		<td>Delete</a></td> <!-- TODO Add functionality -->
+		<td>View Courses</a></td> <!-- TODO Add functionality -->
+		</tr> 
+	</table> 
+</form> 
+<a href="../inputStudent">Add a new student</a> <!-- TODO Add functionality -->
+
+</body>
+</html>
