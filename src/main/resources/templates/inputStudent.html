@@ -1,0 +1,39 @@
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+<meta charset="ISO-8859-1"> 
+
+<title>Insert Student Information</title> 
+</head> 
+<body> 
+	<script type="text/javascript">
+		function checkForm(formToCheck){
+			//Validate Name input
+			var nameNoBlanks = formToCheck.name.replace(" ", "");
+			var numPattern = /[0-9]/;
+			
+			if(formToCheck.name.length == 0 || nameNoBlanks.length == 0){ //If input is blank or whitespace
+				alert("Error: Name must have input.");
+				return false;
+			}
+			
+			if(numPattern.test(nameNoBlanks)){ //If the no blank string has numbers
+				alert("Error: Name must have no numbers.");
+				return false
+			}
+			return true; //If all checks pass return true
+		}
+	</script>
+
+	<form name="studentForm" onsubmit="return checkForm(this);" th:object="${newStudent}" th:action="@{/update/{id}(id=${newStudent.getId})}" method=POST>
+		Student Name: <input name="name" size="20"th:field="*{name}"> <br /> 
+		
+		Courses: <br />
+		<select th:field="*{courses}" name="allCoursesToAdd" multiple size="6">
+		     <option th:each="currentCourse : ${courses}"
+	             th:value="${country.id}">ID ${currentCourse.courseId} | Course ${currentCourse.courseName} | Instructor ${currentCourse.instructor} | Credits ${currentCourse.instructor}</option>
+		</select>
+		<input name="submit" type="submit" value="submit" /> 
+	</form> 
+	<a href="viewAll">View all Students</a> <!-- TODO ensure links work -->
+</body> 
+</html>
