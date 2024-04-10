@@ -18,7 +18,8 @@ import jakarta.persistence.Id;
 public class Course {
 	@Id 
 	@GeneratedValue
-	private int id; 
+	//Changed to long
+	private long id; 
 	private String courseId; 
 	private String courseName; 
 	private int creditHours;
@@ -60,7 +61,7 @@ public class Course {
 	 * @param currentGrade
 	 * @param isCompleted
 	 */
-	public Course(int id, String courseId, String courseName, int creditHours, String instructor, double currentGrade,
+	public Course(long id, String courseId, String courseName, int creditHours, String instructor, double currentGrade,
 			boolean isCompleted) {
 		super();
 		this.id = id;
@@ -75,13 +76,13 @@ public class Course {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**

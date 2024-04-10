@@ -21,7 +21,7 @@ import dmacc.beans.Course;
 public class Student {
 	@Id
 	@GeneratedValue
-	private int id; 
+	private long id; 
 	private String name;
 	@Autowired
 	private List<Course> listOfCourses;
@@ -54,7 +54,7 @@ public class Student {
 	 * @param name
 	 * @param listOfCourses
 	 */
-	public Student(int id, String name, List<Course> listOfCourses) {
+	public Student(long id, String name, List<Course> listOfCourses) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -65,13 +65,13 @@ public class Student {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
