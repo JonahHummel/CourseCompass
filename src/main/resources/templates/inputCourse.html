@@ -1,0 +1,99 @@
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+<meta charset="ISO-8859-1"> 
+<title>Insert Course Information</title> 
+</head> 
+<body> 
+	<script type="text/javascript">
+		//Checks if values are blank or whitespace
+		function checkBlank(formInput, inputTitle){
+			var formInputNoBlanks = formInput.replace(" ", "");
+			if(formInput.length == 0 || formInputNoBlanks.length == 0){ //If input is blank or whitespace
+				alert("Error: " + inputTitle + " must have input.");
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		
+		function checkForm(formToCheck){
+			
+			//Ensure Course ID is not blank
+			if(checkBlank(formToCheck.courseId.value, "Course ID")){ //If input is blank or whitespace
+				return false;
+			}
+			
+			//Ensure Course Name is not blank
+			if(checkBlank(formToCheck.courseName.value, "Course Name")){ //If input is blank or whitespace
+				return false;
+			}
+			
+			//Ensure Course Credit Hours between 1-5 and not blank
+			if(checkBlank(formToCheck.creditHours.value, "Credit Hours")){ //If input is blank or whitespace
+				return false;
+			}
+			
+			if(!parseInt(formToCheck.creditHours.value)){ //If Credit hours is not a number
+				alert("Error: Credit Hours must be a number.");
+				formToCheck.creditHours.focus();
+				return false;
+			}
+			else{ //If credit hours is a number
+				if(parseInt(formToCheck.creditHours.value) < 1 || parseInt(formToCheck.creditHours.value) > 5){
+					alert("Error: Credit Hours must be a number 1-5.");
+					formToCheck.creditHours.focus();
+					return false;
+				}
+				
+			}
+			
+			//Ensure Instructor is not blank
+			if(checkBlank(formToCheck.instructor.value, "Instructor")){ //If input is blank or whitespace
+				return false;
+			}
+			
+			//Ensure current Grade is between 0 and 100 decimal and is not blank
+			if(checkBlank(formToCheck.currentGrade.value, "Credit Hours")){ //If input is blank or whitespace
+				return false;
+			}
+			
+			if(!parseFloat(formToCheck.currentGrade.value)){ //If Grade is not a double
+				alert("Error: Grade must be a decimal number.");
+				formToCheck.currentGrade.focus();
+				return false;
+			}
+			else{ //If Grade is a float
+				if(parseFloat(formToCheck.currentGrade.value) < 0 || parseFloat(formToCheck.currentGrade.value) > 100){
+					alert("Error: Grade must be between 0 and 100.00.");
+					formToCheck.currentGrade.focus();
+					return false;
+				}
+				
+			}
+			
+			//Ensure is completed true or false
+			if(checkBlank(formToCheck.isCompleted.value, "Is Completed")){ //If input is blank or whitespace
+				return false;
+			}
+			
+			if(formToCheck.isCompleted.value.toUpperCase() != "TRUE" && formToCheck.isCompleted.value.toUpperCase() != "FALSE"){ //If input is neither true or false
+				return false;
+			}
+			
+			return true; //If all the checks pass
+		}
+	</script>
+
+	<form name="courseForm" onsubmit="return checkForm(this);" th:object="${newCourse}" th:action="@{/update/{id}(id=${newCourse.getId})}" method=POST>
+		Course ID: <input name="courseId" size="20"th:field="*{courseId}"> <br /> 
+		Course Name: <input name="courseName" size="10" th:field="*{courseName}"><br /> 
+		Credit Hours: <input name="creditHours" size="20" th:field="*{creditHours}"><br /> 
+		Instructor: <input name="instructor" size="20" th:field="*{instructor}"><br />
+		Current Grade: <input name="currentGrade" size="20" th:field="*{currentGrade}"><br />
+		Is Completed: <input name="isCompleted" size="20" th:field="*{isCompleted}"><br />
+		<input name="submit" type="submit" value="submit" /> 
+	</form> 
+	<a href="viewAll">View all Students</a> <!-- TODO ensure links function -->
+</body> 
+</html>
