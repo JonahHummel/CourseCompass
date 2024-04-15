@@ -19,12 +19,15 @@
 		<td th:text="${currentCourse.instructor}" /> 
 		<td th:text="${currentCourse.currentGrade}" /> 
 		<td th:text="${currentCourse.isCompleted}" />
-		<td>Edit</a></td> <!-- TODO Add functionality -->
-		<td>Delete</a></td> <!-- TODO Add functionality -->
+		
+		<td><a th:href="@{/editCourse/{id}(id=${currentCourse.id})}">Edit</a></td>
+		<td><a th:href="@{/deleteCourse/{id}(id=${currentCourse.id})}" onclick="return confirm('Are you sure you want to delete this course?')">Delete</a></td>
+		
 		</tr> 
 	</table> 
 </form> 
-<a href="../inputCourse">Add a new course</a> 
+
+<a href="../inputCourse">Add a new course</a>  <!-- TODO Add functionality -->
 
 </body>
 </html>

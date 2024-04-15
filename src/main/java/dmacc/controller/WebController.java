@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import dmacc.Repository.CourseRepository;
 import dmacc.Repository.StudentRepository;
+import dmacc.beans.Course;
 import dmacc.beans.Student;
 
 
@@ -20,6 +22,10 @@ public class WebController {
 
 @Autowired
 StudentRepository repo;
+
+@Autowired
+CourseRepository courseRepo;
+
 //View all Courses
 @GetMapping({ "/", "viewAll" })
 	public String viewAllStudents(Model model) {
@@ -63,7 +69,55 @@ StudentRepository repo;
 	public String deleteUser(@PathVariable("id") long id, Model model) {
 		Student s = repo.findById(id).orElse(null); repo.delete(s);
 		return viewAllStudents(model);
+	}
 		
-		}
-	
+		
+//Methods to add and delete courses 
+
+// Add new Course
+@GetMapping("/inputCourse")
+	public String addNewCourse(Model model) {
+		Course c = new Course();
+	    model.addAttribute("newCourse", c);
+	    return "inputCourse";
+	    }
+
+@PostMapping("/inputCourse")
+	public String addNewCourse(@ModelAttribute Course newCourse, Model model) {
+		courseRepo.save(newCourse);
+	    return "redirect:/courses/viewAll";
+	    }
+
+// Edit Course
+@GetMapping("/editCourse/{id}")
+	public String showUpdateCourse(@PathVariable("id") long id, Model model) {
+		Course course = courseRepo.findById(id).orElse(null);
+	    	if (course == null) {
+	        return "redirect:/courses/viewAll";
+	    }
+	    	model.addAttribute("course", course);
+	        return "editCourse";
+	    }
+
+@PostMapping("/updateCourse/{id}")
+	public String updateCourse(@PathVariable("id") long id, @ModelAttribute Course updatedCourse, Model model) {
+		Course existingCourse = courseRepo.findById(id).orElse(null);
+	    	if (existingCourse != null) {
+	    		existingCourse.setCourseId(updatedCourse.getCourseId());
+	            existingCourse.setCourseName(updatedCourse.getCourseName());
+	            existingCourse.setCreditHours(updatedCourse.getCreditHours());
+	            existingCourse.setInstructor(updatedCourse.getInstructor());
+	            existingCourse.setCurrentGrade(updatedCourse.getCurrentGrade());
+	            existingCourse.setCompleted(updatedCourse.isCompleted());
+	            courseRepo.save(existingCourse);
+	        }
+	        return "redirect:/courses/viewAll";
+	    }
+
+// Delete Course
+@GetMapping("/deleteCourse/{id}")
+	public String deleteCourse(@PathVariable("id") long id, Model model) {
+		courseRepo.deleteById(id);
+	    return "redirect:/courses/viewAll";
+	    }
 }
