@@ -10,5 +10,5 @@ import dmacc.beans.Student;
  * Apr 10, 2024
  */
 public interface StudentRepository extends JpaRepository<Student, Long> {
-
+	Student findByStudentId(String studentId);
 }

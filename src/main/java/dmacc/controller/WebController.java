@@ -1,5 +1,7 @@
 package dmacc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -120,4 +122,13 @@ CourseRepository courseRepo;
 		courseRepo.deleteById(id);
 	    return "redirect:/courses/viewAll";
 	    }
+
+// Find Current Courses for student (to do courses)
+@GetMapping("/todo-courses")
+	public String getToDoCourses(@PathVariable("studentId") String studentId, Model model) {
+		Student student = repo.findByStudentId(studentId); //  Query Added to Student Repository -- Determines which student to search courses for
+		List<Course> todoCourses = courseRepo.findByStudentAndIsCompletedFalse(student); //  Query Added to Course Repository
+		model.addAttribute("todoCourses", todoCourses);
+    	return "courseList";
+}
 }
