@@ -17,19 +17,32 @@ public class GPAMethods {
 	private double gpaGrade = 0;
 	
 	/**
+	 * No Arg Constructor to access class
+	 */
+	public GPAMethods() {
+		super();
+	}
+
+
+	/**
 	 * @param courseList
 	 * @return the gpaGrade
 	 * A method to handle getting grade information from course list and return a 4 point GPA
 	 */
 	public double getGPA(List<Course> courseList) {
-		for(Course course: courseList) { //Iterates through provided course list
-			if(course.isCompleted() == true){ //Checks if course is completed
-				this.totalGrade += course.getCurrentGrade(); //Update the grade count
-				this.classCount += 1; //Update the completed course count
-			}
+		if(courseList.isEmpty()) { //If the list is empty
+			return 0.0;
 		}
-		this.setGPA(); //Calls set method
-		return this.gpaGrade; //Returns the GPA
+		else {
+			for(Course course: courseList) { //Iterates through provided course list
+				if(course.isCompleted() == true){ //Checks if course is completed
+					this.totalGrade += course.getCurrentGrade(); //Update the grade count
+					this.classCount += 1; //Update the completed course count
+				}
+			}
+			this.setGPA(); //Calls set method
+			return this.gpaGrade; //Returns the GPA
+		}
 	}
 	
 	
