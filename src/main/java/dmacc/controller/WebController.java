@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import dmacc.Repository.CourseRepository;
 import dmacc.Repository.StudentRepository;
 import dmacc.beans.Course;
+import dmacc.beans.GPAMethods;
 import dmacc.beans.Student;
 
 
@@ -125,10 +126,13 @@ CourseRepository courseRepo;
 
 // Find Current Courses for student (to do courses)
 @GetMapping("/todo-courses")
-	public String getToDoCourses(@PathVariable("studentId") String studentId, Model model) {
-		Student student = repo.findByStudentId(studentId); //  Query Added to Student Repository -- Determines which student to search courses for
-		List<Course> todoCourses = courseRepo.findByStudentAndIsCompletedFalse(student); //  Query Added to Course Repository
-		model.addAttribute("todoCourses", todoCourses);
-    	return "courseList";
-}
+public String getToDoCourses(@PathVariable("studentId") String studentId, Model model) {
+	Student student = repo.findByStudentId(studentId); //  Query Added to Student Repository -- Determines which student to search courses for
+	List<Course> todoCourses = courseRepo.findByStudentAndIsCompletedFalse(student); //  Query Added to Course Repository
+	GPAMethods gpaCalc = new GPAMethods();
+	double gpaDouble = gpaCalc.getGPA(student.getListOfCourses());
+	model.addAttribute("todoCourses", todoCourses);
+	model.addAttribute("GPAView", gpaDouble);
+	return "courseList";
+}  
 }

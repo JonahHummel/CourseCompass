@@ -5,27 +5,28 @@
 <title>Course List</title>
 </head>
 <body>
-<!-- TODO based on student show their course list if none direct to creating a course -->
-<h2>Course List:</h2>
-<p>Current GPA: <span id="gpaOutput"></span></p>
+<!-- Display Course List-->
+<h3>Current Courses</h3>
+<table>
+    <tr>
+        <th>Course ID</th>
+        <th>Course Name</th>
+        <th>Course Instructor</th>
+        <th>Course Grade</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <tr th:each="course : ${todoCourses}">
+        <td th:text="${course.courseId}"></td>
+        <td th:text="${course.courseName}"></td>
+        <td th:text="${course.instructor}"></td>
+        <td th:text="${course.currentGrade}"></td>
+        <td><a th:href="@{'/editCourse/' + ${course.id}}">Edit</a></td>
+        <td><a th:href="@{'/deleteCourse/' + ${course.id}}" onclick="return confirm('Are you sure you want to delete this course?')">Delete</a></td>
+    </tr>
+</table>
 
-<form> 
-	<table> 
-		<tr th:each="currentCourse : ${courses}" > 
-		<td th:text="${currentCourse.id}" /> 
-		<td th:text="${currentCourse.courseId}" /> 
-		<td th:text="${currentCourse.courseName}" /> 
-		<td th:text="${currentCourse.creditHours}" /> 
-		<td th:text="${currentCourse.instructor}" /> 
-		<td th:text="${currentCourse.currentGrade}" /> 
-		<td th:text="${currentCourse.isCompleted}" />
-		
-		<td><a th:href="@{/editCourse/{id}(id=${currentCourse.id})}">Edit</a></td>
-		<td><a th:href="@{/deleteCourse/{id}(id=${currentCourse.id})}" onclick="return confirm('Are you sure you want to delete this course?')">Delete</a></td>
-		
-		</tr> 
-	</table> 
-</form> 
+<p>Current GPA: <span th:text="${GPAView}" id="gpaOutput"></span></p>
 
 <a href="../inputCourse">Add a new course</a>  <!-- TODO Add functionality -->
 
