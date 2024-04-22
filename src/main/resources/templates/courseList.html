@@ -21,6 +21,7 @@
         <td th:text="${course.courseName}"></td>
         <td th:text="${course.instructor}"></td>
         <td th:text="${course.currentGrade}"></td>
+		<td th:text="${course.creditHours}"></td>
         <td><a th:href="@{'/editCourse/' + ${course.id}}">Edit</a></td>
         <td><a th:href="@{'/deleteCourse/' + ${course.id}}" onclick="return confirm('Are you sure you want to delete this course?')">Delete</a></td>
     </tr>
