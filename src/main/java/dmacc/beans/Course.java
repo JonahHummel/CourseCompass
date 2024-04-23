@@ -5,8 +5,9 @@
  */
 package dmacc.beans;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,8 @@ public class Course {
 	private String instructor;
 	private double currentGrade;
 	private boolean isCompleted;
+    private Map<String, Double> assignmentGrades; // Map to store assignment grades (assignmentName -> grade)
+
 	
 	//Constructors
 	/**
@@ -159,6 +162,20 @@ public class Course {
 		this.isCompleted = isCompleted;
 	}
 	
+	  // Assignment Grades Management Methods
+
+    public void addAssignmentGrade(String assignmentName, double grade) {
+        assignmentGrades.put(assignmentName, grade);
+    }
+
+    public Map<String, Double> getAssignmentGrades() {
+        return assignmentGrades;
+    }
+
+    public void removeAssignmentGrade(String assignmentName) {
+        assignmentGrades.remove(assignmentName);
+    }
+	
 	//Helper Methods
 	@Override
 	public String toString() {
@@ -166,6 +183,8 @@ public class Course {
 				+ creditHours + ", instructor=" + instructor + ", currentGrade=" + currentGrade + ", isCompleted="
 				+ isCompleted + "]";
 	}
+	
+	
 	
 
 }

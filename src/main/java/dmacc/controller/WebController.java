@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import dmacc.Repository.CourseRepository;
 import dmacc.Repository.StudentRepository;
@@ -135,4 +136,48 @@ public String getToDoCourses(@PathVariable("studentId") String studentId, Model 
 	model.addAttribute("GPAView", gpaDouble);
 	return "courseList";
 }  
+
+//Display form to add assignment grade for a specific course
+@GetMapping("/inputAssignmentGrade/{id}")
+public String showAddAssignmentForm(@PathVariable Long id, Model model) {
+    Course course = courseRepo.findById(id).orElse(null);
+    if (course == null) {
+        return "redirect:/courses/viewAll";
+    }
+    model.addAttribute("course", course);
+    model.addAttribute("assignmentName", "");
+    model.addAttribute("grade", null);
+    return "addAssignmentForm";
+}
+
+// Display course details including assignment grades
+@GetMapping("/viewAll")
+public String viewAllCourses(Model model) {
+    model.addAttribute("courses", courseRepo.findAll());
+    return "courseList";
+}
+
+// Process form submission to add assignment grade
+@PostMapping("/inputAssignmentGrade/{id}")
+public String addAssignmentGrade(@PathVariable Long id, @RequestParam String assignmentName,
+                                 @RequestParam Double grade, Model model) {
+    Course course = courseRepo.findById(id).orElse(null);
+    if (course != null && assignmentName != null && grade != null) {
+        course.addAssignmentGrade(assignmentName, grade);
+        courseRepo.save(course);
+    }
+    return "/courses/viewAll";
+}
+
+// Delete assignment grade from a course
+@GetMapping("/deleteAssignment/{id}/{assignmentName}")
+public String deleteAssignmentGrade(@PathVariable Long id, @PathVariable String assignmentName, Model model) {
+    Course course = courseRepo.findById(id).orElse(null);
+    if (course != null && course.getAssignmentGrades().containsKey(assignmentName)) {
+        course.removeAssignmentGrade(assignmentName);
+        courseRepo.save(course);
+    }
+    return "/courses/viewAll";
+	}
+
 }
