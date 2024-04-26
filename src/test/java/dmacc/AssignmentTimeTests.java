@@ -22,7 +22,7 @@ public class AssignmentTimeTests {
 	 */
 	@Test
 	void workingConstructorTest() {
-		Course testCourse = new Course("CIS175", "Java II", 3, "Louis Schanus", 98.5, false);
+		Course testCourse = new Course("CIS175", "Java II", 3, "Louis Schanus", 98.5);
 		AssignmentTimeMethods AssignmentClass = new AssignmentTimeMethods(testCourse, 10, 10);
 		
 		assertEquals(AssignmentClass.getWeeklyPoints(), 10);

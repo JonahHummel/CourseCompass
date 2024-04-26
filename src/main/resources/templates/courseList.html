@@ -6,7 +6,7 @@
 </head>
 <body>
 <!-- Display Course List-->
-<h3>Current Courses</h3>
+<h3>Courses For: <span th:text="${student.name}" id="name"></span></h3>
 <table>
     <tr>
         <th>Course ID</th>
@@ -16,7 +16,7 @@
         <th>Edit</th>
         <th>Delete</th>
     </tr>
-    <tr th:each="course : ${todoCourses}">
+    <tr th:each="course : ${student.listOfCourses}">
         <td th:text="${course.courseId}"></td>
         <td th:text="${course.courseName}"></td>
         <td th:text="${course.instructor}"></td>
@@ -29,7 +29,7 @@
 
 <p>Current GPA: <span th:text="${GPAView}" id="gpaOutput"></span></p>
 
-<a href="../inputCourse">Add a new course</a>
+<a href="/inputCourse">Add a new course</a>
 
 </body>
 </html>

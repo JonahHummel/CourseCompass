@@ -4,6 +4,7 @@
 <title>Insert Course Information</title> 
 </head> 
 <body> 
+
 	<script type="text/javascript">
 		//Checks if values are blank or whitespace
 		function checkBlank(formInput, inputTitle){
@@ -85,15 +86,15 @@
 		}
 	</script>
 
-	<form name="courseForm" onsubmit="return checkForm(this);" th:object="${newCourse}" th:action="@{/update/{id}(id=${newCourse.getId})}" method=POST>
-		Course ID: <input name="courseId" size="20"th:field="*{courseId}"> <br /> 
+	<form name="courseForm" onsubmit="return checkForm(this);" th:object="${newCourse}" th:action="@{/updateCourse/{id}(id=${newCourse.id})}" method="POST">
+		Course ID: <input name="courseId" size="20"th:field="*{courseId}"> <br />
 		Course Name: <input name="courseName" size="10" th:field="*{courseName}"><br /> 
 		Credit Hours: <input name="creditHours" size="20" th:field="*{creditHours}"><br /> 
 		Instructor: <input name="instructor" size="20" th:field="*{instructor}"><br />
 		Current Grade: <input name="currentGrade" size="20" th:field="*{currentGrade}"><br />
-		Is Completed: <input name="isCompleted" size="20" th:field="*{isCompleted}"><br />
+		<!-- Is Completed: <input name="isCompleted" size="20" th:field="*{isCompleted}"><br /> -->
 		<input name="submit" type="submit" value="submit" /> 
 	</form> 
-	<a href="viewAll">View all Students</a> <!-- TODO ensure links function -->
+	<a href="/viewAll">View all Students</a> <!-- TODO ensure links function -->
 </body> 
 </html>

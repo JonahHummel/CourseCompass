@@ -11,7 +11,7 @@ public class BeanConfig {
 	
 	@Bean
 	public Course course() {
-		Course beanCourse = new Course("CIS175","Java II",3,"Louie Schanus",90.5,false);
+		Course beanCourse = new Course("CIS175","Java II",3,"Louie Schanus",90.5);
 		return beanCourse;
 	}
 	

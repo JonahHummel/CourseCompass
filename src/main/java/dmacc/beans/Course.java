@@ -26,7 +26,6 @@ public class Course {
 	private String instructor;
 	private double currentGrade;
 	private boolean isCompleted;
-	
 	@ManyToOne
     private Student student;
 //    private Map<String, Double> assignmentGrades;
@@ -47,15 +46,13 @@ public class Course {
 	 * @param currentGrade
 	 * @param isCompleted
 	 */
-	public Course(String courseId, String courseName, int creditHours, String instructor, double currentGrade,
-			boolean isCompleted) {
+	public Course(String courseId, String courseName, int creditHours, String instructor, double currentGrade) {
 		super();
 		this.courseId = courseId;
 		this.courseName = courseName;
 		this.creditHours = creditHours;
 		this.instructor = instructor;
 		this.currentGrade = currentGrade;
-		this.isCompleted = isCompleted;
 	}
 	/**
 	 * @param id
@@ -66,8 +63,7 @@ public class Course {
 	 * @param currentGrade
 	 * @param isCompleted
 	 */
-	public Course(long id, String courseId, String courseName, int creditHours, String instructor, double currentGrade,
-			boolean isCompleted) {
+	public Course(long id, String courseId, String courseName, int creditHours, String instructor, double currentGrade) {
 		super();
 		this.id = id;
 		this.courseId = courseId;
@@ -75,7 +71,6 @@ public class Course {
 		this.creditHours = creditHours;
 		this.instructor = instructor;
 		this.currentGrade = currentGrade;
-		this.isCompleted = isCompleted;
 	}
 	//Getters and Setters
 	/**
@@ -177,6 +172,12 @@ public class Course {
 //        assignmentGrades.remove(assignmentName);
 //    }
 	
+	public Student getStudent() {
+		return student;
+	}
+	public void setStudent(Student student) {
+		this.student = student;
+	}
 	//Helper Methods
 	@Override
 	public String toString() {

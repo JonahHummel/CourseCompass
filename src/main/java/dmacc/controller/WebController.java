@@ -123,17 +123,31 @@ CourseRepository courseRepo;
 	    return "redirect:/courses/viewAll";
 	    }
 
-// Find Current Courses for student (to do courses)
-@GetMapping("/todo-courses")
-public String getToDoCourses(@PathVariable("studentId") long id, Model model) {
-	Student s = repo.findById(id).orElse(null);
-	List<Course> todoCourses = courseRepo.findByStudentAndIsCompletedFalse(s); //  Query Added to Course Repository
-	GPAMethods gpaCalc = new GPAMethods();
-	double gpaDouble = gpaCalc.getGPA(s.getListOfCourses());
-	model.addAttribute("todoCourses", todoCourses);
-	model.addAttribute("GPAView", gpaDouble);
-	return "courseList";
-}  
+// Find Courses of each student 
+@GetMapping("/viewCourses/{studentId}")
+public String viewCourses(@PathVariable("studentId") Long Id, Model model){
+	Student student = repo.findById(Id).orElse(null);
+    if (student != null) {
+    	model.addAttribute("student", student);
+    	return "courseList";
+    } else {
+    	return "error";
+    }
+    
+}
+
+@PostMapping("/addCourse/{studentId}")
+public String addCourse(@ModelAttribute Course newCourse, @PathVariable long studentId) {
+    Student student = repo.findById(studentId).orElse(null);
+    if (student != null) {
+        newCourse.setStudent(student);
+        student.getListOfCourses().add(newCourse);
+        repo.save(student);
+        return "redirect:/viewCourses/" + studentId;
+    } else {
+        return "error";
+    }
+}
 //
 ////Display form to add assignment grade for a specific course
 //@GetMapping("/inputAssignmentGrade/{id}")
