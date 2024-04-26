@@ -86,7 +86,7 @@
 		}
 	</script>
 
-	<form name="courseForm" onsubmit="return checkForm(this);" th:object="${newCourse}" th:action="@{/updateCourse/{id}(id=${newCourse.id})}" method="POST">
+	<form name="courseForm" onsubmit="return checkForm(this);" th:object="${newCourse}" th:action="@{/inputCourse/{id}(id=${student.id})}" method="POST">
 		Course ID: <input name="courseId" size="20"th:field="*{courseId}"> <br />
 		Course Name: <input name="courseName" size="10" th:field="*{courseName}"><br /> 
 		Credit Hours: <input name="creditHours" size="20" th:field="*{creditHours}"><br /> 

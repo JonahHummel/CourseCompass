@@ -129,7 +129,7 @@ public class AssignmentTimeTests {
 	 */
 	@Test
 	void validTimeTest() {
-		Course testCourse = new Course("CIS175", "Java II", 3, "Louis Schanus", 98.5, false);
+		Course testCourse = new Course("CIS175", "Java II", 3, "Louis Schanus", 98.5);
 		AssignmentTimeMethods AssignmentClass = new AssignmentTimeMethods(testCourse, 25, 5);
 		assertEquals(AssignmentClass.getAssignmentTime(), "1 hour(s) and 12 minute(s)");
 	}
@@ -139,7 +139,7 @@ public class AssignmentTimeTests {
 	 */
 	@Test
 	void zeroWeeklyTimeTest() {
-		Course testCourse = new Course("CIS175", "Java II", 3, "Louis Schanus", 98.5, false);
+		Course testCourse = new Course("CIS175", "Java II", 3, "Louis Schanus", 98.5);
 		AssignmentTimeMethods AssignmentClass = new AssignmentTimeMethods(testCourse, 0, 10);
 		assertEquals(AssignmentClass.getAssignmentTime(), "0 hours and 0 minutes");
 	}
@@ -149,7 +149,7 @@ public class AssignmentTimeTests {
 	 */
 	@Test
 	void zeroAssignmentTimeTest() {
-		Course testCourse = new Course("CIS175", "Java II", 3, "Louis Schanus", 98.5, false);
+		Course testCourse = new Course("CIS175", "Java II", 3, "Louis Schanus", 98.5);
 		AssignmentTimeMethods AssignmentClass = new AssignmentTimeMethods(testCourse, 10, 0);
 		assertEquals(AssignmentClass.getAssignmentTime(), "0 hour(s) and 0 minute(s)");
 	}

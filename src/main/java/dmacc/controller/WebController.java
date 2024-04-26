@@ -2,6 +2,7 @@ package dmacc.controller;
 
 import java.util.List;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,51 +78,63 @@ CourseRepository courseRepo;
 //Methods to add and delete courses 
 
 // Add new Course
-@GetMapping("/inputCourse")
-	public String addNewCourse(Model model) {
-		Course c = new Course();
-	    model.addAttribute("newCourse", c);
-	    return "inputCourse";
-	    }
+@GetMapping("/inputCourse/{id}")
+public String addNewCourse(@PathVariable long id, Model model) {
+    Student student = repo.findById(id).orElse(null);
+    model.addAttribute("student", student); // Always add the student object to the model
+    if (student != null) {
+        Course newCourse = new Course();
+        newCourse.setStudent(student);
+        model.addAttribute("newCourse", newCourse);
+        return "inputCourse";
+    } else {
+        return "error";
+    }
+}
 
-@PostMapping("/inputCourse")
-	public String addNewCourse(@ModelAttribute Course newCourse, Model model) {
-		courseRepo.save(newCourse);
-	    return "redirect:/courses/viewAll";
-	    }
+@PostMapping("/inputCourse/{id}")
+public String addNewCourse(@PathVariable long id, @ModelAttribute Course newCourse, Model model) {
+    Student student = repo.findById(id).orElse(null);
+    if (student != null) {
+        newCourse.setStudent(student);
+        courseRepo.save(newCourse);
+        student.getListOfCourses().add(newCourse);
+        repo.save(student);
+        return viewAllStudents(model);
+    } else {
+        return "error";
+    }
+}
 
-// Edit Course
-@GetMapping("/editCourse/{id}")
-	public String showUpdateCourse(@PathVariable("id") long id, Model model) {
-		Course course = courseRepo.findById(id).orElse(null);
-	    	if (course == null) {
-	        return "redirect:/courses/viewAll";
-	    }
-	    	model.addAttribute("course", course);
-	        return "editCourse";
-	    }
 
-@PostMapping("/updateCourse/{id}")
-	public String updateCourse(@PathVariable("id") long id, @ModelAttribute Course updatedCourse, Model model) {
-		Course existingCourse = courseRepo.findById(id).orElse(null);
-	    	if (existingCourse != null) {
-	    		existingCourse.setCourseId(updatedCourse.getCourseId());
-	            existingCourse.setCourseName(updatedCourse.getCourseName());
-	            existingCourse.setCreditHours(updatedCourse.getCreditHours());
-	            existingCourse.setInstructor(updatedCourse.getInstructor());
-	            existingCourse.setCurrentGrade(updatedCourse.getCurrentGrade());
-	            existingCourse.setCompleted(updatedCourse.isCompleted());
-	            courseRepo.save(existingCourse);
-	        }
-	        return "redirect:/courses/viewAll";
-	    }
-
-// Delete Course
-@GetMapping("/deleteCourse/{id}")
-	public String deleteCourse(@PathVariable("id") long id, Model model) {
-		courseRepo.deleteById(id);
-	    return "redirect:/courses/viewAll";
-	    }
+//Delete Course
+@GetMapping("/deleteCourse/{studentId}/{courseId}")
+public String deleteCourse(@PathVariable long studentId, @PathVariable long courseId, Model model) {
+ // Find the student by ID
+ Optional<Student> optionalStudent = repo.findById(studentId);
+ if (optionalStudent.isPresent()) {
+     Student student = optionalStudent.get();
+     // Find the course by ID
+     Optional<Course> optionalCourse = courseRepo.findById(courseId);
+     if (optionalCourse.isPresent()) {
+         Course courseToDelete = optionalCourse.get();
+         // Remove the course from the student's listOfCourses
+         student.getListOfCourses().remove(courseToDelete);
+         // Save the updated student (this will remove the course from the student's list of courses in the database)
+         repo.save(student);
+         // Delete the course from the course repository
+         courseRepo.delete(courseToDelete);
+     } else {
+         // Course not found, handle the error (e.g., return an error page)
+         return "error";
+     }
+ } else {
+     // Student not found, handle the error (e.g., return an error page)
+     return "error";
+ }
+ // Redirect to the viewCourses page for the student
+ return "redirect:/viewCourses/" + studentId;
+}
 
 // Find Courses of each student 
 @GetMapping("/viewCourses/{studentId}")
@@ -148,49 +161,4 @@ public String addCourse(@ModelAttribute Course newCourse, @PathVariable long stu
         return "error";
     }
 }
-//
-////Display form to add assignment grade for a specific course
-//@GetMapping("/inputAssignmentGrade/{id}")
-//public String showAddAssignmentForm(@PathVariable Long id, Model model) {
-//    Course course = courseRepo.findById(id).orElse(null);
-//    if (course == null) {
-//        return "redirect:/courses/viewAll";
-//    }
-//    model.addAttribute("course", course);
-//    model.addAttribute("assignmentName", "");
-//    model.addAttribute("grade", null);
-//    return "addAssignmentForm";
-//}
-//
-//// Display course details including assignment grades
-//@GetMapping("/viewAll")
-//public String viewAllCourses(Model model) {
-//    model.addAttribute("courses", courseRepo.findAll());
-//    return "courseList";
-//}
-//
-//// Process form submission to add assignment grade
-//@PostMapping("/inputAssignmentGrade/{id}")
-//public String addAssignmentGrade(@PathVariable Long id, @RequestParam String assignmentName,
-//                                 @RequestParam Double grade, Model model) {
-//    Course course = courseRepo.findById(id).orElse(null);
-//    if (course != null && assignmentName != null && grade != null) {
-//        course.addAssignmentGrade(assignmentName, grade);
-//        courseRepo.save(course);
-//    }
-//    return "/courses/viewAll";
-//}
-//
-//// Delete assignment grade from a course
-//@GetMapping("/deleteAssignment/{id}/{assignmentName}")
-//public String deleteAssignmentGrade(@PathVariable Long id, @PathVariable String assignmentName, Model model) {
-//    Course course = courseRepo.findById(id).orElse(null);
-//    if (course != null && course.getAssignmentGrades().containsKey(assignmentName)) {
-//        course.removeAssignmentGrade(assignmentName);
-//        courseRepo.save(course);
-//    }
-//    return "/courses/viewAll";
-//	}
-//
-//
 }

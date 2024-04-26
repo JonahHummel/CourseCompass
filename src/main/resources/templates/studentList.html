@@ -16,6 +16,7 @@
         <td><a th:href="@{/delete/{id}(id=${currentStudent.id})}" onclick="return confirm('Are you sure you want to delete this student?')">Delete</a></td> 
         <td><a th:href="@{/viewCourses/{id}(id=${currentStudent.id})}">View Courses</a></td> 
         </tr> 
+		<tr>
 	</table> 
 </form> 
 <a href="../inputStudent">Add a new student</a> <!-- TODO Add functionality -->
