@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import dmacc.beans.Course;
 
 /**
@@ -24,6 +26,7 @@ public class Student {
 	private long id; 
 	private String name;
 	@Autowired
+	@OneToMany
 	private List<Course> listOfCourses;
 	
 	//Constructors

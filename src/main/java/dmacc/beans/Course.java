@@ -5,22 +5,20 @@
  */
 package dmacc.beans;
 
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 /**
  * 
  */
+
 @Entity
 public class Course {
 	@Id 
-	@GeneratedValue
-	//Changed to long
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id; 
 	private String courseId; 
 	private String courseName; 
@@ -28,7 +26,10 @@ public class Course {
 	private String instructor;
 	private double currentGrade;
 	private boolean isCompleted;
-    private Map<String, Double> assignmentGrades; // Map to store assignment grades (assignmentName -> grade)
+	
+	@ManyToOne
+    private Student student;
+//    private Map<String, Double> assignmentGrades;
 
 	
 	//Constructors
@@ -164,17 +165,17 @@ public class Course {
 	
 	  // Assignment Grades Management Methods
 
-    public void addAssignmentGrade(String assignmentName, double grade) {
-        assignmentGrades.put(assignmentName, grade);
-    }
-
-    public Map<String, Double> getAssignmentGrades() {
-        return assignmentGrades;
-    }
-
-    public void removeAssignmentGrade(String assignmentName) {
-        assignmentGrades.remove(assignmentName);
-    }
+//    public void addAssignmentGrade(String assignmentName, double grade) {
+//        assignmentGrades.put(assignmentName, grade);
+//    }
+//
+//    public Map<String, Double> getAssignmentGrades() {
+//        return assignmentGrades;
+//    }
+//
+//    public void removeAssignmentGrade(String assignmentName) {
+//        assignmentGrades.remove(assignmentName);
+//    }
 	
 	//Helper Methods
 	@Override

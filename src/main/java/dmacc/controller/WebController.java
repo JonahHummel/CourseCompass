@@ -3,11 +3,13 @@ package dmacc.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dmacc.Repository.CourseRepository;
@@ -16,12 +18,7 @@ import dmacc.beans.Course;
 import dmacc.beans.GPAMethods;
 import dmacc.beans.Student;
 
-
-/**
- * Larry Paucar - Lpaucar
- * CIS175 -Spring 2024
- * Apr 8, 2024
- */
+@Controller
 public class WebController {
 
 @Autowired
@@ -31,12 +28,13 @@ StudentRepository repo;
 CourseRepository courseRepo;
 
 //View all Courses
-@GetMapping({ "/", "viewAll" })
+@GetMapping("/viewAll")
 	public String viewAllStudents(Model model) {
-		if(repo.findAll().isEmpty()) { return addNewStudent(model);
+		if(repo.findAll().isEmpty()) { 
+			return addNewStudent(model);
 	}
 		model.addAttribute("students", repo.findAll());
-		return "results";
+		return "studentList";
 	}
 	
 //Add new Students
@@ -44,7 +42,7 @@ CourseRepository courseRepo;
     public String addNewStudent(Model model) {
         Student s = new Student();
         model.addAttribute("newStudent", s);
-        return "input";
+        return "inputStudent";
 	}
 	
 @PostMapping("/inputStudent")
@@ -58,7 +56,7 @@ CourseRepository courseRepo;
 	public String showUpdateStudent(@PathVariable("id") long id, Model model) {
 		Student s = repo.findById(id).orElse(null);
 		model.addAttribute("newStudent", s);
-		return "input"; }
+		return "inputStudent"; }
 	
 //Update Students
 @PostMapping("/update/{id}")
@@ -127,57 +125,58 @@ CourseRepository courseRepo;
 
 // Find Current Courses for student (to do courses)
 @GetMapping("/todo-courses")
-public String getToDoCourses(@PathVariable("studentId") String studentId, Model model) {
-	Student student = repo.findByStudentId(studentId); //  Query Added to Student Repository -- Determines which student to search courses for
-	List<Course> todoCourses = courseRepo.findByStudentAndIsCompletedFalse(student); //  Query Added to Course Repository
+public String getToDoCourses(@PathVariable("studentId") long id, Model model) {
+	Student s = repo.findById(id).orElse(null);
+	List<Course> todoCourses = courseRepo.findByStudentAndIsCompletedFalse(s); //  Query Added to Course Repository
 	GPAMethods gpaCalc = new GPAMethods();
-	double gpaDouble = gpaCalc.getGPA(student.getListOfCourses());
+	double gpaDouble = gpaCalc.getGPA(s.getListOfCourses());
 	model.addAttribute("todoCourses", todoCourses);
 	model.addAttribute("GPAView", gpaDouble);
 	return "courseList";
 }  
-
-//Display form to add assignment grade for a specific course
-@GetMapping("/inputAssignmentGrade/{id}")
-public String showAddAssignmentForm(@PathVariable Long id, Model model) {
-    Course course = courseRepo.findById(id).orElse(null);
-    if (course == null) {
-        return "redirect:/courses/viewAll";
-    }
-    model.addAttribute("course", course);
-    model.addAttribute("assignmentName", "");
-    model.addAttribute("grade", null);
-    return "addAssignmentForm";
-}
-
-// Display course details including assignment grades
-@GetMapping("/viewAll")
-public String viewAllCourses(Model model) {
-    model.addAttribute("courses", courseRepo.findAll());
-    return "courseList";
-}
-
-// Process form submission to add assignment grade
-@PostMapping("/inputAssignmentGrade/{id}")
-public String addAssignmentGrade(@PathVariable Long id, @RequestParam String assignmentName,
-                                 @RequestParam Double grade, Model model) {
-    Course course = courseRepo.findById(id).orElse(null);
-    if (course != null && assignmentName != null && grade != null) {
-        course.addAssignmentGrade(assignmentName, grade);
-        courseRepo.save(course);
-    }
-    return "/courses/viewAll";
-}
-
-// Delete assignment grade from a course
-@GetMapping("/deleteAssignment/{id}/{assignmentName}")
-public String deleteAssignmentGrade(@PathVariable Long id, @PathVariable String assignmentName, Model model) {
-    Course course = courseRepo.findById(id).orElse(null);
-    if (course != null && course.getAssignmentGrades().containsKey(assignmentName)) {
-        course.removeAssignmentGrade(assignmentName);
-        courseRepo.save(course);
-    }
-    return "/courses/viewAll";
-	}
-
+//
+////Display form to add assignment grade for a specific course
+//@GetMapping("/inputAssignmentGrade/{id}")
+//public String showAddAssignmentForm(@PathVariable Long id, Model model) {
+//    Course course = courseRepo.findById(id).orElse(null);
+//    if (course == null) {
+//        return "redirect:/courses/viewAll";
+//    }
+//    model.addAttribute("course", course);
+//    model.addAttribute("assignmentName", "");
+//    model.addAttribute("grade", null);
+//    return "addAssignmentForm";
+//}
+//
+//// Display course details including assignment grades
+//@GetMapping("/viewAll")
+//public String viewAllCourses(Model model) {
+//    model.addAttribute("courses", courseRepo.findAll());
+//    return "courseList";
+//}
+//
+//// Process form submission to add assignment grade
+//@PostMapping("/inputAssignmentGrade/{id}")
+//public String addAssignmentGrade(@PathVariable Long id, @RequestParam String assignmentName,
+//                                 @RequestParam Double grade, Model model) {
+//    Course course = courseRepo.findById(id).orElse(null);
+//    if (course != null && assignmentName != null && grade != null) {
+//        course.addAssignmentGrade(assignmentName, grade);
+//        courseRepo.save(course);
+//    }
+//    return "/courses/viewAll";
+//}
+//
+//// Delete assignment grade from a course
+//@GetMapping("/deleteAssignment/{id}/{assignmentName}")
+//public String deleteAssignmentGrade(@PathVariable Long id, @PathVariable String assignmentName, Model model) {
+//    Course course = courseRepo.findById(id).orElse(null);
+//    if (course != null && course.getAssignmentGrades().containsKey(assignmentName)) {
+//        course.removeAssignmentGrade(assignmentName);
+//        courseRepo.save(course);
+//    }
+//    return "/courses/viewAll";
+//	}
+//
+//
 }
