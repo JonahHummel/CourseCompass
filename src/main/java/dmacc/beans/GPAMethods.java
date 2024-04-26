@@ -35,10 +35,8 @@ public class GPAMethods {
 		}
 		else {
 			for(Course course: courseList) { //Iterates through provided course list
-				if(course.isCompleted() == true){ //Checks if course is completed
-					this.totalGrade += course.getCurrentGrade(); //Update the grade count
-					this.classCount += 1; //Update the completed course count
-				}
+				this.totalGrade += course.getCurrentGrade(); //Update the grade count
+				this.classCount += 1; //Update the completed course count
 			}
 			this.setGPA(); //Calls set method
 			return this.gpaGrade; //Returns the GPA
@@ -105,4 +103,4 @@ public class GPAMethods {
 		}
 		return fourPoint;
 	}
-}//End of file
+}
