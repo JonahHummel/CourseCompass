@@ -154,4 +154,17 @@ public String viewCourses(@PathVariable("studentId") Long Id, Model model){
     }
     
 }
+
+@PostMapping("/addCourse/{studentId}")
+public String addCourse(@ModelAttribute Course newCourse, @PathVariable long studentId) {
+    Student student = repo.findById(studentId).orElse(null);
+    if (student != null) {
+        newCourse.setStudent(student);
+        student.getListOfCourses().add(newCourse);
+        repo.save(student);
+        return "redirect:/viewCourses/" + studentId;
+    } else {
+        return "error";
+    }
+}
 }

@@ -121,15 +121,6 @@
             
         }
         
-        //Ensure is completed true or false
-        if(checkBlank(formToCheck.isCompleted.value, "Is Completed")){ //If input is blank or whitespace
-            return false;
-        }
-        
-        if(formToCheck.isCompleted.value.toUpperCase() != "TRUE" && formToCheck.isCompleted.value.toUpperCase() != "FALSE"){ //If input is neither true or false
-            return false;
-        }
-        
         return true; //If all the checks pass
     }
 </script>
@@ -146,8 +137,6 @@
     <input name="instructor" id="instructor" size="20" th:field="*{instructor}" required><br />
     <label for="currentGrade">Current Grade:</label>
     <input name="currentGrade" id="currentGrade" size="20" th:field="*{currentGrade}" required><br />
-    <label for="isCompleted">Is Completed:</label>
-    <input name="isCompleted" id="isCompleted" size="20" th:field="*{isCompleted}" required><br />
     <input name="submit" type="submit" value="Submit" /> 
 </form> 
 <a href="/viewAll">View all Students</a>
