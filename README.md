@@ -6,7 +6,6 @@
 
 <h4>Developers: </h4>
 <ul>
-  <li>Cory H</li>
   <li>Jonah H</li>
   <li>Larry P</li>
   <li>Mandy W</li>
