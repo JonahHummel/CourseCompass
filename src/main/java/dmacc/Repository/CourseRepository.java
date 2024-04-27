@@ -1,14 +1,19 @@
 package dmacc.Repository;
+/**
+ * @author Mandy Wiedmier
+ * @author Jonah Hummel
+ * @author Larry Paucar
+ * CIS175 - Spring 2024
+ * Final Project - CourseCompass
+ * Due Date: Apr 30, 2024
+ */
 
-import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import dmacc.beans.Course;
-import dmacc.beans.Student;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
-	List<Course> findByStudentAndIsCompletedFalse(Student student);
 }

@@ -1,39 +1,77 @@
 <html xmlns:th="http://www.thymeleaf.org"> 
-<head> 
-<meta charset="ISO-8859-1"> 
-<title>Insert Student Information</title> 
-</head> 
-<body> 
-    <script type="text/javascript">
-        function checkForm(formToCheck){
-            //Validate Name input
-            var nameNoBlanks = formToCheck.name.value.replace(" ", "");
-            var numPattern = /[0-9]/;
-            
-            if(formToCheck.name.value.length == 0 || nameNoBlanks.length == 0){ //If input is blank or whitespace
-                alert("Error: Name must have input.");
-                return false;
+    <head> 
+        <meta charset="ISO-8859-1"> 
+        <title>Insert Student Information</title> 
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f2f2f2;
             }
             
-            if(numPattern.test(nameNoBlanks)){ //If the no blank string has numbers
-                alert("Error: Name must have no numbers.");
-                return false;
+            form {
+                max-width: 600px;
+                margin: 20px auto;
             }
-            return true; //If all checks pass return true
-        }
-    </script>
+            
+            form input[type="text"],
+            form input[type="number"],
+            form input[type="submit"] {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+            
+            form input[type="submit"] {
+                background-color: #007bff;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            form input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+            
+            a {
+                color: #007bff;
+                text-decoration: none;
+            }
+            
+            a:hover {
+                text-decoration: underline;
+            }
+            </style>
+    </head> 
+	<body> 
 
-    <form name="studentForm" onsubmit="return checkForm(this);" th:object="${newStudent}" th:action="@{/update/{id}(id=${newStudent.id})}" method="POST">
-        Student Name: <input name="name" size="20" th:field="*{name}" /> <br /> 
+        <script type="text/javascript">
+            function checkForm(formToCheck){
+                //Validate Name input
+                var nameNoBlanks = formToCheck.name.value.replace(" ", "");
+                var numPattern = /[0-9]/;
+            
+                if(formToCheck.name.value.length == 0 || nameNoBlanks.length == 0){ //If input is blank or whitespace
+                    alert("Error: Name must have input.");
+                    return false;
+                }
+            
+                if(numPattern.test(nameNoBlanks)){ //If the no blank string has numbers
+                    alert("Error: Name must have no numbers.");
+                    return false;
+                }
+                return true; //If all checks pass return true
+            }
+        </script>
+
+        <form name="studentForm" onsubmit="return checkForm(this);" th:object="${newStudent}" th:action="@{/update/{id}(id=${newStudent.id})}" method="POST">
+            Student Name: <input name="name" size="20" th:field="*{name}" /><br /> 
+
+            <input name="submit" type="submit" value="submit" /> 
+        </form> 
         
-        Courses: <br />
-		<select th:field="*{listOfCourses}" name="allCoursesToAdd" multiple size="6">
-		    <option th:each="currentCourse : ${courses}"
-		            th:value="${currentCourse.id}">ID ${currentCourse.courseId} | Course ${currentCourse.courseName} | Instructor ${currentCourse.instructor} | Credits ${currentCourse.instructor}</option>
-		</select>
-
-        <input name="submit" type="submit" value="submit" /> 
-    </form> 
-    <a href="/viewAll">View all Students</a> <!-- TODO ensure links work -->
-</body> 
+        <a href="/viewAll">View all Students</a>
+	</body> 
 </html>

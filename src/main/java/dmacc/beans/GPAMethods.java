@@ -1,24 +1,25 @@
 /**
- * @author Mandy Wiedmier - mwiedmier2
+ * @author Mandy Wiedmier
+ * @author Jonah Hummel
+ * @author Larry Paucar
  * CIS175 - Spring 2024
- * Apr 16, 2024
+ * Final Project - CourseCompass
+ * Due Date: Apr 30, 2024
  */
 package dmacc.beans;
 
 import java.util.List;
-import dmacc.beans.Course;
 
 /**
- * 
+ *
+ * GPA Methods takes a Student's List<Course> and determines GPA
+ * All of these methods are utilized to give an output in the viewCourses map in WebController
  */
 public class GPAMethods {
 	private double totalGrade = 0;
 	private int classCount = 0;
 	private double gpaGrade = 0;
 	
-	/**
-	 * No Arg Constructor to access class
-	 */
 	public GPAMethods() {
 		super();
 	}

@@ -1,25 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Student List</title>
+    <meta charset="ISO-8859-1">
+    <title>Student List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .add-link {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .add-link:hover {
+            background-color: #0056b3;
+        }
+
+        .gpa-output {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-<h2>Student List:</h2>
-<form> 
-	<table> 
-		<tr th:each="currentStudent : ${students}" > 
-		<td th:text="${currentStudent.id}" /> 
-		<td th:text="${currentStudent.name}" /> 
-		
-		<td><a th:href="@{/edit/{id}(id=${currentStudent.id})}">Edit</a></td> 
-        <td><a th:href="@{/delete/{id}(id=${currentStudent.id})}" onclick="return confirm('Are you sure you want to delete this student?')">Delete</a></td> 
-        <td><a th:href="@{/viewCourses/{id}(id=${currentStudent.id})}">View Courses</a></td> 
-        </tr> 
-		<tr>
-	</table> 
-</form> 
-<a href="../inputStudent">Add a new student</a> <!-- TODO Add functionality -->
-
+<h3>Student List:</h3>
+<table>
+    <tr>
+        <th>Student ID</th>
+        <th>Name</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="currentStudent : ${students}">
+        <td th:text="${currentStudent.id}"></td>
+        <td th:text="${currentStudent.name}"></td>
+        <td>
+            <a th:href="@{/edit/{id}(id=${currentStudent.id})}">Edit</a> |
+            <a th:href="@{/delete/{id}(id=${currentStudent.id})}" onclick="return confirm('Are you sure you want to delete this student?')">Delete</a> |
+            <a th:href="@{/viewCourses/{id}(id=${currentStudent.id})}">View Courses</a>
+        </td>
+    </tr>
+</table>
+<a href="../inputStudent" class="add-link">Add a new student</a>
 </body>
 </html>

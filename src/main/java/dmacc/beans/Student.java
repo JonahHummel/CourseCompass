@@ -1,10 +1,12 @@
-/**
- * @author Mandy Wiedmier - mwiedmier2
- * CIS175 - Spring 2024
- * Apr 6, 2024
- */
 package dmacc.beans;
-
+/**
+ * @author Mandy Wiedmier
+ * @author Jonah Hummel
+ * @author Larry Paucar
+ * CIS175 - Spring 2024
+ * Final Project - CourseCompass
+ * Due Date: Apr 30, 2024
+ */
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import dmacc.beans.Course;
-
 /**
- * 
+ * Student has a One to Many relation with Course Entities
+ * A List of Course object(s) are stored in each Student created
  */
 @Entity
 public class Student {
@@ -29,34 +29,21 @@ public class Student {
 	@OneToMany
 	private List<Course> listOfCourses;
 	
-	//Constructors
-	/**
-	 * No arg constructor
-	 */
 	public Student() {
 		super();
 	}
-	/**
-	 * @param name
-	 */
+
 	public Student(String name) {
 		super();
 		this.name = name;
 	}
-	/**
-	 * @param name
-	 * @param listOfCourses
-	 */
+
 	public Student(String name, List<Course> listOfCourses) {
 		super();
 		this.name = name;
 		this.listOfCourses = listOfCourses;
 	}
-	/**
-	 * @param id
-	 * @param name
-	 * @param listOfCourses
-	 */
+
 	public Student(long id, String name, List<Course> listOfCourses) {
 		super();
 		this.id = id;
@@ -64,45 +51,36 @@ public class Student {
 		this.listOfCourses = listOfCourses;
 	}
 	
-	//Getters and setters
-	/**
-	 * @return the id
-	 */
+	
+	//getters and setters
+
 	public long getId() {
 		return id;
 	}
-	/**
-	 * @param id the id to set
-	 */
+
 	public void setId(long id) {
 		this.id = id;
 	}
-	/**
-	 * @return the name
-	 */
+
 	public String getName() {
 		return name;
 	}
-	/**
-	 * @param name the name to set
-	 */
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	/**
-	 * @return the listOfCourses
-	 */
+
 	public List<Course> getListOfCourses() {
 		return listOfCourses;
 	}
-	/**
-	 * @param listOfCourses the listOfCourses to set
-	 */
+
 	public void setListOfCourses(List<Course> listOfCourses) {
 		this.listOfCourses = listOfCourses;
 	}
 	
+	
 	//Helper Methods
+	
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", name=" + name + ", listOfCourses=" + listOfCourses + "]";

@@ -1,6 +1,12 @@
 package dmacc.controller;
-
-import java.util.List;
+/**
+ * @author Mandy Wiedmier
+ * @author Jonah Hummel
+ * @author Larry Paucar
+ * CIS175 - Spring 2024
+ * Final Project - CourseCompass
+ * Due Date: Apr 30, 2024
+ */
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import dmacc.Repository.CourseRepository;
 import dmacc.Repository.StudentRepository;
 import dmacc.beans.Course;
@@ -28,7 +31,12 @@ StudentRepository repo;
 @Autowired
 CourseRepository courseRepo;
 
-//View all Courses
+
+/**
+ *  STUDENT CONTROLLER METHODS
+ */
+
+//View all Students
 @GetMapping("/viewAll")
 	public String viewAllStudents(Model model) {
 		if(repo.findAll().isEmpty()) { 
@@ -37,7 +45,7 @@ CourseRepository courseRepo;
 		model.addAttribute("students", repo.findAll());
 		return "studentList";
 	}
-	
+
 //Add new Students
 @GetMapping("/inputStudent")
     public String addNewStudent(Model model) {
@@ -59,7 +67,6 @@ CourseRepository courseRepo;
 		model.addAttribute("newStudent", s);
 		return "inputStudent"; }
 	
-//Update Students
 @PostMapping("/update/{id}")
 	public String reviseStudent(Student s, Model model) {
 		repo.save(s);
@@ -74,8 +81,12 @@ CourseRepository courseRepo;
 		return viewAllStudents(model);
 	}
 		
-		
-//Methods to add and delete courses 
+
+
+
+/**
+ *  COURSE CONTROLLER METHODS
+ */
 
 // Add new Course
 @GetMapping("/inputCourse/{id}")
@@ -110,55 +121,37 @@ public String addNewCourse(@PathVariable long id, @ModelAttribute Course newCour
 //Delete Course
 @GetMapping("/deleteCourse/{studentId}/{courseId}")
 public String deleteCourse(@PathVariable long studentId, @PathVariable long courseId, Model model) {
- // Find the student by ID
  Optional<Student> optionalStudent = repo.findById(studentId);
  if (optionalStudent.isPresent()) {
      Student student = optionalStudent.get();
-     // Find the course by ID
      Optional<Course> optionalCourse = courseRepo.findById(courseId);
      if (optionalCourse.isPresent()) {
          Course courseToDelete = optionalCourse.get();
-         // Remove the course from the student's listOfCourses
          student.getListOfCourses().remove(courseToDelete);
-         // Save the updated student (this will remove the course from the student's list of courses in the database)
          repo.save(student);
-         // Delete the course from the course repository
          courseRepo.delete(courseToDelete);
      } else {
-         // Course not found, handle the error (e.g., return an error page)
          return "error";
      }
  } else {
-     // Student not found, handle the error (e.g., return an error page)
      return "error";
  }
- // Redirect to the viewCourses page for the student
  return "redirect:/viewCourses/" + studentId;
 }
 
-// Find Courses of each student 
+// View Courses Per Student
 @GetMapping("/viewCourses/{studentId}")
 public String viewCourses(@PathVariable("studentId") Long Id, Model model){
 	Student student = repo.findById(Id).orElse(null);
     if (student != null) {
     	model.addAttribute("student", student);
+    	GPAMethods gpaClass = new GPAMethods();
+    	double finalGPA = gpaClass.getGPA(student.getListOfCourses());
+    	model.addAttribute("GPAView", finalGPA);
     	return "courseList";
     } else {
     	return "error";
     }
     
-}
-
-@PostMapping("/addCourse/{studentId}")
-public String addCourse(@ModelAttribute Course newCourse, @PathVariable long studentId) {
-    Student student = repo.findById(studentId).orElse(null);
-    if (student != null) {
-        newCourse.setStudent(student);
-        student.getListOfCourses().add(newCourse);
-        repo.save(student);
-        return "redirect:/viewCourses/" + studentId;
-    } else {
-        return "error";
-    }
 }
 }

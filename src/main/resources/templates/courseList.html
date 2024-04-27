@@ -1,36 +1,66 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Course List</title>
-</head>
-<body>
-<!-- Display Course List-->
-<h3>Courses For: <span th:text="${student.name}" id="name"></span></h3>
-<table>
-    <tr>
+  <head>
+    <meta charset="ISO-8859-1">
+    <title>Course List</title>
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f2f2f2;
+      }
+      
+      h3 {
+          margin-bottom: 20px;
+      }
+      
+      table {
+          width: 100%;
+          border-collapse: collapse;
+      }
+      
+      th, td {
+          padding: 8px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+      }
+      
+      th {
+          background-color: #f2f2f2;
+      }
+      
+      a {
+          color: #007bff;
+          text-decoration: none;
+      }
+      
+      a:hover {
+          text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Courses For: <span th:text="${student.name}" id="name"></span></h3>
+    <table>
+      <tr>
         <th>Course ID</th>
         <th>Course Name</th>
         <th>Course Instructor</th>
         <th>Course Grade</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-    <tr th:each="course : ${student.listOfCourses}">
+      </tr>
+      <tr th:each="course : ${student.listOfCourses}">
         <td th:text="${course.courseId}"></td>
         <td th:text="${course.courseName}"></td>
         <td th:text="${course.instructor}"></td>
         <td th:text="${course.currentGrade}"></td>
-		<td th:text="${course.creditHours}"></td>
-		<td><a th:href="@{'/deleteCourse/' + ${student.id} + '/' + ${course.id}}" onclick="return confirm('Are you sure you want to delete this course?')">Drop</a></td>
-    </tr>
-    <tr>
-		<td><a th:href="@{/inputCourse/{id}(id=${student.id})}">Add Course</a></td>
-    </tr>
-</table>
+		    <td th:text="${course.creditHours}"></td>
+		    <td><a th:href="@{'/deleteCourse/' + ${student.id} + '/' + ${course.id}}" onclick="return confirm('Are you sure you want to delete this course?')">Drop</a></td>
+      </tr>
+      <tr>
+		    <td><a th:href="@{/inputCourse/{id}(id=${student.id})}">Add Course</a></td>
+      </tr>
+    </table>
 
-<p>Current GPA: <span th:text="${GPAView}" id="gpaOutput"></span></p>
-
+    <p>Current GPA: <span th:text="${GPAView}" id="gpaOutput"></span></p>
 
 </body>
 </html>
